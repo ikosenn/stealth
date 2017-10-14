@@ -50,7 +50,7 @@ public class MenuState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 
 		Input input = container.getInput();
-		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			int mouseX = input.getMouseX();
 			int mouseY = input.getMouseY();
 			
@@ -60,7 +60,7 @@ public class MenuState extends BasicGameState {
 			}
 			// high score
 			if ((mouseX > 424 && mouseX < 604) && (mouseY > 397 && mouseY < 486)) {
-				System.out.println("Clicked Highscore button");
+				game.enterState(StealthGame.SCORE_STATE_ID);
 			}
 			//  click on exit button
 			if ((mouseX > 424 && mouseX < 604) && (mouseY > 595 && mouseY < 685)) {
