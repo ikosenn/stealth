@@ -5,6 +5,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import jig.ResourceManager;
+
 
 /**
  * This is an arcade game called Stealth. The idea behind the game 
@@ -15,6 +17,10 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 
 public class StealthGame extends StateBasedGame {
+	
+	public final static int MENU_STATE_ID = 1;
+	public static final String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
+	public static final String GAME_TITLE_SRC = "stealth/resources/stealth.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -28,7 +34,12 @@ public class StealthGame extends StateBasedGame {
 	
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-
+		// add game states
+		addState(new MenuState());
+		
+		// preload resources 
+		ResourceManager.loadImage(MENU_BUTTONS_SRC);
+		ResourceManager.loadImage(GAME_TITLE_SRC);
 	}
 
 	public static void main(String[] args) {
