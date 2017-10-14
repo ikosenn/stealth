@@ -18,7 +18,8 @@ import jig.ResourceManager;
 
 public class StealthGame extends StateBasedGame {
 	
-	public final static int MENU_STATE_ID = 1;
+	public final static int MENU_STATE_ID = 0;
+	public final static int SCORE_STATE_ID = 1;
 	public static final String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
 	public static final String GAME_TITLE_SRC = "stealth/resources/stealth.png";
 	
@@ -36,6 +37,7 @@ public class StealthGame extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		// add game states
 		addState(new MenuState());
+		addState(new HighScoreState());
 		
 		// preload resources 
 		ResourceManager.loadImage(MENU_BUTTONS_SRC);
