@@ -22,10 +22,10 @@ import jig.ResourceManager;
 
 
 public class MenuState extends BasicGameState {
-
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		
+
 	}
 
 	@Override
@@ -48,7 +48,6 @@ public class MenuState extends BasicGameState {
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-
 		Input input = container.getInput();
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			int mouseX = input.getMouseX();
