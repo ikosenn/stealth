@@ -55,7 +55,7 @@ public class MenuState extends BasicGameState {
 			
 			// play button
 			if ((mouseX > 424 && mouseX < 604) && (mouseY > 197 && mouseY < 283)) {
-				System.out.println("Click play button");
+				game.enterState(StealthGame.PLAY_STATE_ID);
 			}
 			// high score
 			if ((mouseX > 424 && mouseX < 604) && (mouseY > 397 && mouseY < 486)) {
