@@ -9,21 +9,24 @@ import org.newdawn.slick.state.StateBasedGame;
 public class PlayState extends BasicGameState {
 	
 	World world;
+	Soldier soldier;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		StealthGame sg = (StealthGame)game;
 		world = new World(sg.getLevel());
+		soldier = new Soldier();
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		world.render(g);
+		soldier.render(g);
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		
+		soldier.update(container);
 	}
 
 	@Override
