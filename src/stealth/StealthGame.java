@@ -28,14 +28,17 @@ public class StealthGame extends StateBasedGame {
 	
 	public final static int MENU_STATE_ID = 0;
 	public final static int SCORE_STATE_ID = 1;
-	public static final String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
-	public static final String GAME_TITLE_SRC = "stealth/resources/stealth.png";
-	public static final String ALARM_SRC = "stealth/resources/alarm.wav";
+	public final static int PLAY_STATE_ID = 2;
+	
+	public final static  String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
+	public final static  String GAME_TITLE_SRC = "stealth/resources/stealth.png";
+	public final static  String ALARM_SRC = "stealth/resources/alarm.wav";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
 	
 	private boolean isAlarmOn = false;
+	private int level = 1;
 		
 	public StealthGame(String title, int width, int height) {
 		
@@ -49,6 +52,7 @@ public class StealthGame extends StateBasedGame {
 		// add game states
 		addState(new MenuState());
 		addState(new HighScoreState());
+		addState(new PlayState());
 		
 		// preload resources 
 		ResourceManager.loadImage(MENU_BUTTONS_SRC);
@@ -85,6 +89,22 @@ public class StealthGame extends StateBasedGame {
 	 */
 	public void soundAlarm(boolean state) {
 		this.isAlarmOn = state;
+	}
+	
+	/**
+	 * 
+	 * Level setter
+	 */
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+	/**
+	 * 
+	 * Level getter
+	 */
+	public int getLevel() {
+		return this.level;
 	}
 	
 }
