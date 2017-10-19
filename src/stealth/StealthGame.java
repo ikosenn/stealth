@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import jig.Entity;
 import jig.ResourceManager;
 
 
@@ -19,6 +20,9 @@ import jig.ResourceManager;
  * Menu buttons resource courtesy of verique
  * https://opengameart.org/content/fantasy-buttons-0
  * 
+ * Soldiers/ Guards resource courtesy of Master484
+ * https://opengameart.org/content/space-soldier-m484-games
+ * 
  * 
  * @author peculiaryak
  *
@@ -30,9 +34,10 @@ public class StealthGame extends StateBasedGame {
 	public final static int SCORE_STATE_ID = 1;
 	public final static int PLAY_STATE_ID = 2;
 	
-	public final static  String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
-	public final static  String GAME_TITLE_SRC = "stealth/resources/stealth.png";
-	public final static  String ALARM_SRC = "stealth/resources/alarm.wav";
+	public final static String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
+	public final static String GAME_TITLE_SRC = "stealth/resources/stealth.png";
+	public final static String ALARM_SRC = "stealth/resources/alarm.wav";
+	public final static String SOLDIER_SRC = "stealth/resources/soldiers.png";
 	
 	public final int ScreenWidth;
 	public final int ScreenHeight;
@@ -44,7 +49,8 @@ public class StealthGame extends StateBasedGame {
 		
 		super(title);
 		ScreenHeight = height;
-		ScreenWidth = width;		
+		ScreenWidth = width;	
+		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
 	}
 	
 	@Override
@@ -57,6 +63,7 @@ public class StealthGame extends StateBasedGame {
 		// preload resources 
 		ResourceManager.loadImage(MENU_BUTTONS_SRC);
 		ResourceManager.loadImage(GAME_TITLE_SRC);
+		ResourceManager.loadImage(SOLDIER_SRC);
 		ResourceManager.loadSound(ALARM_SRC);
 	}
 
