@@ -4,7 +4,7 @@ import jig.Vector;
 public class Node {
 	private int x; // position in worlds multi-dimensional Array
 	private int y; // position in worlds multi-dimensional Array
-	private Node predecessor; // for path finding. Which node to move to when planning a path.
+	private Node predecessor = null; // for path finding. Which node to move to when planning a path.
 	private boolean blocked; // associate moving to blocked nodes with a higher cost
 	
 	public Node(int x, int y) {
@@ -63,6 +63,17 @@ public class Node {
 		this.predecessor = predecessor;
 	}
 	
+	/*
+	 * x getter
+	 */
+	public int getX() {
+		return this.x;
+	}
 	
-	
+	/*
+	 * y getter
+	 */
+	public int getY() {
+		return this.y;
+	}
 }

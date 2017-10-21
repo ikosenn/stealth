@@ -44,6 +44,8 @@ public class StealthGame extends StateBasedGame {
 	
 	private boolean isAlarmOn = false;
 	private int level = 1;
+	
+	World world;
 		
 	public StealthGame(String title) {
 		
@@ -110,6 +112,13 @@ public class StealthGame extends StateBasedGame {
 	 */
 	public int getLevel() {
 		return this.level;
+	}
+	
+	/**
+	 * create the world based on the current level
+	 */
+	public void createWorld() {
+		world = new World(this.getLevel());
 	}
 	
 }

@@ -4,8 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import jig.Vector;
-
 /**
  * This is what draws the different levels. 
  * It also stores information about a level such as the patrol routes,
@@ -39,8 +37,6 @@ public class World {
 		int nodeHeight = (StealthGame.SCREEN_HEIGHT - World.TOP_Y) / World.TILE_SIZE;
 		nodes = new Node[nodeHeight][nodeWidth];
 		int objectLayer = map.getLayerIndex("walls");
-		System.out.println("Height: " + this.map.getHeight());
-		System.out.println("Width: " + this.map.getWidth());
 		// create nodes object 
 		for (int i=0; i < nodes.length; i++) {
 			for (int j=0; j < nodes[i].length; j++) {
@@ -51,10 +47,6 @@ public class World {
 				nodes[i][j] = tempNode;
 			}
 		}
-		System.out.println("Node 0:0 " + nodes[0][0].isBlocked() + " " + nodes[0][0].getCenter());
-		System.out.println("Node 0:1 " + nodes[1][0].isBlocked() + " " + nodes[1][0].getCenter());
-		System.out.println("Node 0:2 " + nodes[2][0].isBlocked() + " " + nodes[2][0].getCenter());
-		System.out.println("Node 0:3 " + nodes[19][0].isBlocked() + " " + nodes[19][0].getCenter());
 	}
 	/**
 	 * Determines which method to call. The method called is responsible 
@@ -81,6 +73,14 @@ public class World {
 	 */
 	private void createLevelOne() throws SlickException {
 		this.map = new TiledMap(World.levelOneTile); 
+	}
+	
+	/**
+	 * nodes getter
+	 * @return the nodes that map to the current tile map
+	 */
+	public Node[][] getNodes() {
+		return this.nodes;
 	}
 	
 	/**
