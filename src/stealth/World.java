@@ -13,19 +13,41 @@ import org.newdawn.slick.tiled.TiledMap;
  *
  */
 public class World {
-	private static final String levelOneTile = "stealth/resources/levelone.tmx";
-	private static final int topY = 64;
-	private static final int topX = 0;
+	public static final int TOP_Y = 64;
+	public static final int TOP_X = 0;
+	public static final int TILE_SIZE = 32;
 	
+	private static final String levelOneTile = "stealth/resources/levelone.tmx";
 	private TiledMap map;
+	private Node[][] nodes;
 	/**
 	 * World constructor
 	 * @param level. The level to create
 	 */
 	public World(int level) {
 		this.generateLevel(level);
+		this.createNode();
 	}
 	
+	/**
+	 * Populate nodes
+	 */
+	private void createNode() {
+		int nodeWidth = StealthGame.SCREEN_WIDTH / World.TILE_SIZE;
+		int nodeHeight = (StealthGame.SCREEN_HEIGHT - World.TOP_Y) / World.TILE_SIZE;
+		nodes = new Node[nodeHeight][nodeWidth];
+		int objectLayer = map.getLayerIndex("walls");
+		// create nodes object 
+		for (int i=0; i < nodes.length; i++) {
+			for (int j=0; j < nodes[i].length; j++) {
+				Node tempNode = new Node(i, j);
+				if (this.map.getTileId(j, i, objectLayer) != 0) {
+					tempNode.setBlocked(true);
+				}
+				nodes[i][j] = tempNode;
+			}
+		}
+	}
 	/**
 	 * Determines which method to call. The method called is responsible 
 	 * for initializing everything for that level.
@@ -54,10 +76,18 @@ public class World {
 	}
 	
 	/**
+	 * nodes getter
+	 * @return the nodes that map to the current tile map
+	 */
+	public Node[][] getNodes() {
+		return this.nodes;
+	}
+	
+	/**
 	 * Handles the rendering of the world
 	 * @param g. Allows us to draw on the screen
 	 */
 	public void render(Graphics g) {
-		map.render(topX, topY);
+		map.render(World.TOP_X, World.TOP_Y);
 	}
 }
