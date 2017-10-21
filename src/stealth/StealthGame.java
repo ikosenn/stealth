@@ -1,5 +1,7 @@
 package stealth;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -7,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import jig.Entity;
 import jig.ResourceManager;
+import jig.Vector;
 
 
 /**
@@ -46,6 +49,7 @@ public class StealthGame extends StateBasedGame {
 	private int level = 1;
 	
 	World world;
+	ArrayList<Guard> guards = new ArrayList<>();
 		
 	public StealthGame(String title) {
 		
@@ -119,6 +123,10 @@ public class StealthGame extends StateBasedGame {
 	 */
 	public void createWorld() {
 		world = new World(this.getLevel());
+		Vector[][] patrolRoutes = this.world.getPatrolRoutes();
+		for (int i = 0; i < patrolRoutes.length; i++) {
+			guards.add(new Guard(patrolRoutes[i]));
+		}
 	}
 	
 }

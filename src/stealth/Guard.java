@@ -25,10 +25,10 @@ public class Guard extends Entity {
 	private Vector max_velocity = new Vector(5f, 5f);
 	private Vector velocity;
 	private boolean stopped = true;
-	private int[][] patrolRoutes;
+	private Vector[] patrolRoutes;
 	
-	public Guard(int[][] patrolRoutes) {
-		super(20, 100);
+	public Guard(Vector[] patrolRoutes) {
+		super(patrolRoutes[0].getX(), patrolRoutes[0].getY());
 		velocity = new Vector(0f, 0f);
 		this.patrolRoutes = patrolRoutes;
 		

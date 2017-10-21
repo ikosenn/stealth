@@ -11,23 +11,22 @@ import org.newdawn.slick.state.StateBasedGame;
 public class PlayState extends BasicGameState {
 	
 	Soldier soldier;
-	Guard guard;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		int[][] patrolRoutes = {{1, 2}};
 		StealthGame sg = (StealthGame)game;
 		sg.createWorld();
 		soldier = new Soldier();
-		guard = new Guard(patrolRoutes);
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		StealthGame sg = (StealthGame)game;
 		sg.world.render(g);
+		for (int i = 0; i < sg.guards.size(); i++) {
+			sg.guards.get(i).render(g);
+		}
 		soldier.render(g);
-		guard.render(g);
 	}
 
 	@Override
