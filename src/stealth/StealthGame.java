@@ -39,17 +39,15 @@ public class StealthGame extends StateBasedGame {
 	public final static String ALARM_SRC = "stealth/resources/alarm.wav";
 	public final static String SOLDIER_SRC = "stealth/resources/soldiers.png";
 	
-	public final int ScreenWidth;
-	public final int ScreenHeight;
+	public final static int SCREEN_WIDTH = 1024;
+	public final static int SCREEN_HEIGHT = 800;
 	
 	private boolean isAlarmOn = false;
 	private int level = 1;
 		
-	public StealthGame(String title, int width, int height) {
+	public StealthGame(String title) {
 		
 		super(title);
-		ScreenHeight = height;
-		ScreenWidth = width;	
 		Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
 	}
 	
@@ -70,8 +68,8 @@ public class StealthGame extends StateBasedGame {
 	public static void main(String[] args) {
 		AppGameContainer app;
 		try {
-			app = new AppGameContainer(new StealthGame("Stealth", 1024, 800));
-			app.setDisplayMode(1024, 800, false);
+			app = new AppGameContainer(new StealthGame("Stealth"));
+			app.setDisplayMode(StealthGame.SCREEN_WIDTH, StealthGame.SCREEN_HEIGHT, false);
 			app.setShowFPS(false);
 			app.setVSync(true);
 			app.start();
