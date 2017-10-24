@@ -101,6 +101,7 @@ public class World {
 	 * @return the nodes that map to the current tile map
 	 */
 	public Node[][] getNodes() {
+		this.createNode();
 		return this.nodes;
 	}
 	

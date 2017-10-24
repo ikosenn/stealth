@@ -156,9 +156,9 @@ public class Dijkstra {
 		int startY =  (int)start.getX() / World.TILE_SIZE;
 		int goalX = ((int)goal.getY() - World.TOP_Y) / World.TILE_SIZE;
 		int goalY =  (int)goal.getX() / World.TILE_SIZE;
-		Node currentNode = nodes[startX][startY];
+		Node currentNode = this.nodes[startX][startY];
 		route.add(currentNode);
-		while (currentNode != nodes[goalX][goalY]) {
+		while (currentNode != this.nodes[goalX][goalY]) {
 			currentNode = currentNode.getPredecessor();
 			route.add(currentNode);
 		}
@@ -182,4 +182,11 @@ public class Dijkstra {
 		}	
 	}
 	
+	/**
+	 * Returns the goal state. This is used for precise path finding. 
+	 * Where the guard goes to the exact goal point instead of the center of the tiles; 
+	 */
+	public Vector getGoal() {
+		return this.goal;
+	}
 }

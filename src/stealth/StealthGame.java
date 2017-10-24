@@ -50,6 +50,8 @@ public class StealthGame extends StateBasedGame {
 	
 	World world;
 	ArrayList<Guard> guards = new ArrayList<>();
+	Alarm alarm = new Alarm();
+	Soldier soldier;
 		
 	public StealthGame(String title) {
 		
@@ -125,8 +127,11 @@ public class StealthGame extends StateBasedGame {
 		world = new World(this.getLevel());
 		Vector[][] patrolRoutes = this.world.getPatrolRoutes();
 		for (int i = 0; i < patrolRoutes.length; i++) {
-			guards.add(new Guard(patrolRoutes[i]));
+			Guard tempGuard = new Guard(patrolRoutes[i]);
+			tempGuard.generatePatrolPaths(this.world);
+			guards.add(tempGuard);
 		}
+		this.soldier = new Soldier();
 	}
 	
 }
