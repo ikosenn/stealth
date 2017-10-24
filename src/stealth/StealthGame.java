@@ -108,7 +108,7 @@ public class StealthGame extends StateBasedGame {
 	public void soundAlarm(boolean state) {
 		if (heat <= 0 && coolingDown <= 0 && state) {
 			this.isAlarmOn = true;
-			heat = 15000;
+			heat = 10000;
 			coolingDown = 5000;
 			spotted += 1;
 		} else if(!state) {

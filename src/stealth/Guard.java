@@ -32,6 +32,9 @@ public class Guard extends Entity {
 	private Dijkstra pathPlanners[]; // store the patrol route paths
 	private boolean stopped = true;
 	private boolean debugPath = false;
+	private boolean debugDetectionRange = false; 
+	private int detectionRange = 4;  // how many blocks I can see; 
+	private ArrayList<Node> rangeVisible;
 	
 	
 	public Guard(Vector[] patrolPoints) {
@@ -167,6 +170,7 @@ public class Guard extends Entity {
 	 */
 	public void update(StealthGame sg) {
 		this.determineCurrentPath(sg);
+		this.alertBase(sg);
 		Vector destination = null;
 		if (this.currentPath != null) {
 			if (currentPath.size() > 1)  {
@@ -261,6 +265,74 @@ public class Guard extends Entity {
 		}
 	}
 	/**
+	 * Compute the range the guard can be able to spot the player
+	 * 
+	 * @param sg. Contains the current game state
+	 */
+	private void determineScope(StealthGame sg) {
+		Node[][] tileNodes = sg.world.getNodes();
+		rangeVisible = new ArrayList<Node>();
+		int currentX = ((int)this.getY() - World.TOP_Y) / World.TILE_SIZE;
+		int currentY =  (int)this.getX() / World.TILE_SIZE;
+		int nodeWidthY = StealthGame.SCREEN_WIDTH / World.TILE_SIZE;
+		int nodeHeightX = (StealthGame.SCREEN_HEIGHT - World.TOP_Y) / World.TILE_SIZE;
+		
+		// right side
+		for (int i = 0; i < this.detectionRange; i++) {
+			int tempY = i + 1 + currentY; 
+			if (tempY >= nodeWidthY || tileNodes[currentX][tempY].isBlocked()) {
+				break;
+			} 
+			rangeVisible.add(tileNodes[currentX][tempY]);
+		}
+		
+		// left  side
+		for (int i = 0; i < this.detectionRange; i++) {
+			int tempY = currentY - (i + 1); 
+			if (tempY < 0 || tileNodes[currentX][tempY].isBlocked()) {
+				break;
+			} 
+			rangeVisible.add(tileNodes[currentX][tempY]);
+		}
+		
+		// top side
+		for (int i = 0; i < this.detectionRange; i++) {
+			int tempX = i + 1 + currentX; 
+			if (tempX >= nodeHeightX || tileNodes[tempX][currentY].isBlocked()) {
+				break;
+			} 
+			rangeVisible.add(tileNodes[tempX][currentY]);
+		}
+		
+		// left  side
+		for (int i = 0; i < this.detectionRange; i++) {
+			int tempX = currentX- (i + 1); 
+			if (tempX < 0 || tileNodes[tempX][currentY].isBlocked()) {
+				break;
+			} 
+			rangeVisible.add(tileNodes[tempX][currentY]);
+		}
+	}
+	
+	/**
+	 * Computes the distance the guards can be able to see.
+	 * If the soldier is in the range of the guard when we sound the alarm
+	 * @param sg. Contains the current game state
+	 */
+	private void alertBase(StealthGame sg) {
+		this.determineScope(sg);
+		int soldierX = ((int)sg.soldier.getY() - World.TOP_Y) / World.TILE_SIZE;
+		int currentY =  (int)sg.soldier.getX() / World.TILE_SIZE;
+		
+		for (int i = 0; i < this.rangeVisible.size(); i++) {
+			Node temp = this.rangeVisible.get(i);
+			if (temp.getX() == soldierX && temp.getY() == currentY) {
+				sg.soundAlarm(true);
+			}
+		}
+	}
+	
+	/**
 	 * Draws all boundaries and images associated with the entity at their 
 	 * designated offset values. We override this so we can be able to debug the paths 
 	 * @param g The current graphics context
@@ -271,6 +343,11 @@ public class Guard extends Entity {
 		
 		if (this.debugPath && this.currentPath != null) {
 			Dijkstra.render(currentPath, g);
+		}
+		
+		if (this.rangeVisible != null && this.debugDetectionRange) {
+			// a hack to print the squares
+			Dijkstra.render(this.rangeVisible, g);
 		}
 	}
 	
