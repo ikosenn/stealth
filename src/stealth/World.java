@@ -4,6 +4,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import jig.Vector;
+
 /**
  * This is what draws the different levels. 
  * It also stores information about a level such as the patrol routes,
@@ -17,15 +19,19 @@ public class World {
 	public static final int TOP_X = 0;
 	public static final int TILE_SIZE = 32;
 	
+	private Vector[][] patrolRoutes;
 	private static final String levelOneTile = "stealth/resources/levelone.tmx";
 	private TiledMap map;
 	private Node[][] nodes;
+	private int level;
+	
 	/**
 	 * World constructor
 	 * @param level. The level to create
 	 */
 	public World(int level) {
-		this.generateLevel(level);
+		this.level = level;
+		this.generateLevel();
 		this.createNode();
 	}
 	
@@ -52,17 +58,31 @@ public class World {
 	 * Determines which method to call. The method called is responsible 
 	 * for initializing everything for that level.
 	 * 
-	 * @param level. The level to generate
 	 * @throws SlickException 
 	 */
-	private void generateLevel(int level) {
+	private void generateLevel() {
 		
 		try {
-			if (level == 1) {
+			if (this.level == 1) {
 				this.createLevelOne();
 			}
 		} catch (SlickException e) {	
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Create the patrol routes for the guards based on the level.
+	 */
+	private void setPatrolRoutes() {
+		if (this.level == 1) {
+			Vector[][] levelPatrolRoutes = {
+				{new Vector(20, 100), new Vector(416, 640)},
+				{new Vector(1010, 540), new Vector(680, 760)},
+				{new Vector(780, 94), new Vector(1010, 400)}
+			};
+			patrolRoutes = new Vector[3][2];
+			patrolRoutes = levelPatrolRoutes;
 		}
 	}
 	
@@ -73,6 +93,7 @@ public class World {
 	 */
 	private void createLevelOne() throws SlickException {
 		this.map = new TiledMap(World.levelOneTile); 
+		this.setPatrolRoutes();
 	}
 	
 	/**
@@ -80,7 +101,17 @@ public class World {
 	 * @return the nodes that map to the current tile map
 	 */
 	public Node[][] getNodes() {
+		this.createNode();
 		return this.nodes;
+	}
+	
+	/*
+	 * Patrol routes getter
+	 * 
+	 * @returns Vector. The vectors to assign the guards.
+	 */
+	public Vector[][] getPatrolRoutes() {
+		return this.patrolRoutes;
 	}
 	
 	/**

@@ -21,7 +21,7 @@ public class Alarm {
 	/**
 	 * Checks if the alarm is already on. If its not already on it plays the alarm.
 	 */
-	public void soundAlarm(StealthGame game) {
+	public void update(StealthGame game) {
 		if (game.isAlarmOn() && !this.alarm.playing()) {
 			this.alarm.play();
 		}

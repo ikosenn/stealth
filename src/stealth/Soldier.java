@@ -1,5 +1,7 @@
 package stealth;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
@@ -27,7 +29,7 @@ public class Soldier extends Entity {
 	private boolean stopped = true;
 	
 	public Soldier() {
-		super(20, 770);
+		super(0, 0);
 		velocity = new Vector(0f, 0f);
 		
 		
@@ -89,6 +91,15 @@ public class Soldier extends Entity {
 		removeAnimation(soldierLeftAnimation);
 	}
 	
+	/**
+	 * Generates the path to the soldier given a vector as the start node.
+	 * @param startNode. The node to use as the start node.
+	 * @return ArrayList containing the set of paths to follow
+	 */
+	public ArrayList<Node> getPathToMe(Vector startNode) {
+		return null;
+	}
+	
 	
 	/**
 	 * Updates the position of the soldier based on the users input. 
@@ -110,8 +121,8 @@ public class Soldier extends Entity {
 				addAnimation(soldierLeftAnimation);
 				orientation = "LEFT";
 			}
-			// check if the soldier was moving to the right
-			if (this.getVelocity().getX() > 0f) {
+			// check if the soldier was moving to the right/ up /down
+			if (this.getVelocity().getX() > 0f || Math.abs(this.getVelocity().getY()) > 0) {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
@@ -125,8 +136,8 @@ public class Soldier extends Entity {
 				addAnimation(soldierRightAnimation);
 				orientation = "RIGHT";
 			}
-			// check if the soldier was moving to the left
-			if (this.getVelocity().getX() < 0f) {
+			// check if the soldier was moving to the left/ up/ down
+			if (this.getVelocity().getX() < 0f || Math.abs(this.getVelocity().getY()) > 0) {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
@@ -135,8 +146,8 @@ public class Soldier extends Entity {
 			stopped = false;
 		}
 		if ((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP))) {
-			// check if the soldier was moving down
-			if (this.getVelocity().getY() > 0f) {
+			// check if the soldier was moving down/ left/ right
+			if (this.getVelocity().getY() > 0f || Math.abs(this.getVelocity().getX()) > 0) {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
@@ -145,8 +156,8 @@ public class Soldier extends Entity {
 			stopped = false;
 		}
 		if ((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN))){
-			// check if the soldier was moving up
-			if (this.getVelocity().getY() < 0f) {
+			// check if the soldier was moving up/ left/ right
+			if (this.getVelocity().getY() < 0f || Math.abs(this.getVelocity().getX()) > 0) {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
