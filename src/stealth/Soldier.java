@@ -27,9 +27,11 @@ public class Soldier extends Entity {
 	private Vector max_velocity = new Vector(5f, 5f);
 	private Vector velocity;
 	private boolean stopped = true;
+	private Dijkstra pathPlanner;
+	private Node currentNode; 
 	
 	public Soldier() {
-		super(0, 0);
+		super(20, 770);
 		velocity = new Vector(0f, 0f);
 		
 		
@@ -51,7 +53,11 @@ public class Soldier extends Entity {
 		// set the animation 
 		soldierRightAnimation = new Animation(rightDirection, 100);
 		soldierLeftAnimation = new Animation(leftDirection, 100);
-				
+		
+		// track the node the soldier is on for path finding
+		int startX = ((int)this.getY() - World.TOP_Y) / World.TILE_SIZE;
+		int startY =  (int)this.getX() / World.TILE_SIZE;
+		this.currentNode = new Node(startX, startY);			
 	}
 	
 	/**
@@ -97,7 +103,27 @@ public class Soldier extends Entity {
 	 * @return ArrayList containing the set of paths to follow
 	 */
 	public ArrayList<Node> getPathToMe(Vector startNode) {
+		if (this.pathPlanner != null) {
+			return pathPlanner.getPath(startNode);
+		}
 		return null;
+	}
+	
+	/**
+	 * Calculates the path to the soldier if the alarm is sounded.
+	 * The path is constantly update if the soldier moves out of the node
+	 * @param sg. Holds the game state
+	 */
+	private void setPathToMe(StealthGame sg) {
+		if (sg.isAlarmOn()) {
+			int startX = ((int)this.getY() - World.TOP_Y) / World.TILE_SIZE;
+			int startY =  (int)this.getX() / World.TILE_SIZE;
+			if (this.currentNode.getX() != startX || this.currentNode.getY() != startY) {
+				pathPlanner = new Dijkstra(
+						sg.world.getNodes(), new Vector(this.getX(), this.getY()));
+				pathPlanner.computePath();
+			}
+		}
 	}
 	
 	
@@ -107,12 +133,15 @@ public class Soldier extends Entity {
 	 * @param container
 	 * A generic game container that handles the game loop, fps recording and managing the input system 
 	 * 
+	 * @param container
+	 * A generic game container that handles the game loop, fps recording and managing the input system 
+	 * 
 	 * @param game
 	 * Holds the state of the game.
 	 */
-	public void update(GameContainer container) {
+	public void update(GameContainer container, StealthGame game) {
 		Input input = container.getInput();
-		
+		this.setPathToMe(game);
 		boolean moved = false;
 		
 		if ((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT))) {

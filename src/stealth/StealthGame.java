@@ -47,6 +47,11 @@ public class StealthGame extends StateBasedGame {
 	
 	private boolean isAlarmOn = false;
 	private int level = 1;
+	private int heat = 0;
+	private int coolingDown = 0;
+	private int spotted = 0;
+	private int life = 3;
+	private int score = 0;
 	
 	World world;
 	ArrayList<Guard> guards = new ArrayList<>();
@@ -101,7 +106,14 @@ public class StealthGame extends StateBasedGame {
 	 * @param state. The state to set the alarm
 	 */
 	public void soundAlarm(boolean state) {
-		this.isAlarmOn = state;
+		if (heat <= 0 && coolingDown <= 0 && state) {
+			this.isAlarmOn = true;
+			heat = 15000;
+			coolingDown = 5000;
+			spotted += 1;
+		} else if(!state) {
+			this.isAlarmOn = false;
+		}
 	}
 	
 	/**
@@ -133,5 +145,86 @@ public class StealthGame extends StateBasedGame {
 		}
 		this.soldier = new Soldier();
 	}
+	
+	/**
+	 * Heat setter
+	 * @param delta. The amount of time elapsed since calling update
+	 */
+	public void setHeat(int delta) {
+		this.heat -= delta;
+	}
+	
+	/**
+	 * Cooling Down setter
+	 * @param delta. The amount of time elapsed since calling update
+	 */
+	public void setCoolingDown(int delta) {
+		this.coolingDown -= delta;
+	}
+	
+	/**
+	 * Heat getter
+	 * @param The heat time. How long the guards will follow you.
+	 */
+	public int getHeat() {
+		return this.heat; 	
+	}
+	
+	/**
+	 * Cooling Down getter
+	 * @return. The cooling down time before you can be spotted again
+	 */
+	public int getCoolingDown() {
+		return this.coolingDown;
+	}
+	
+	/**
+	 * Spotted getter
+	 * @return. The number of times the player has been spotted
+	 */
+	public int getSpottedCount() {
+		return this.spotted;
+	}
+	
+	/**
+	 * Spotted setter
+	 * @param times. The number of times the player has been spotted.
+	 * This can be used to reset the count to zero
+	 */
+	public void setSpottedCount(int times) {
+		this.spotted = times;
+	}
+	
+	/**
+	 * Increments the score if a collision happens
+	 */
+	public void incrementScore(int score) {
+		this.score += score;
+	}
+	
+	/**
+	 * reduce the life if the ball goes below the screen
+	 */
+	public void reduceLives() {
+		this.life -= 1;
+	}
+	
+	/**
+	 * Player life getter
+	 * @return the total number of lives left
+	 */
+	public int getLife() {
+		return this.life;
+	}
+	
+	/**
+	 * The Player's score getter
+	 * @return an integer that represents the Player's current score
+	 */
+	public int getScore() {
+		return this.score;
+	}
+
+	
 	
 }
