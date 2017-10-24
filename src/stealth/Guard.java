@@ -23,7 +23,7 @@ public class Guard extends Entity {
 	private Image leftStanding;
 	private Image rightDirection[] = new Image[8];
 	private Image leftDirection[] = new Image[8];
-	private Vector max_velocity = new Vector(4f, 4f);
+	private Vector max_velocity = new Vector(3f, 3f);
 	private Vector velocity;
 	private Vector[] patrolPoints;
 	private int nextPath = 1;  // we store patrol paths. Tracks the next on to follow
@@ -32,7 +32,6 @@ public class Guard extends Entity {
 	private Dijkstra pathPlanners[]; // store the patrol route paths
 	private boolean stopped = true;
 	private boolean debugPath = false;
-	private String previousKeyPressed = "";
 	
 	
 	public Guard(Vector[] patrolPoints) {
@@ -137,29 +136,28 @@ public class Guard extends Entity {
 			}
 		}
 	}
+	
 	/**
 	 * tries to mimic the movement as though it was being input from the 
 	 * keyboard;
-	 * @param destination. The node to go to
+	 * @param destination. The node to go to.
 	 * @return The key to press
 	 */
 	private String getKeyPressed(Vector destination) {
 		String keyPressed = "";
-		 // travel to the center of the node
-
+		if (destination == null) {
+			return keyPressed;
+		}
 		// always prefer moving down if the 
-		if (previousKeyPressed == "S" && destination.getY() > (int)this.getY()) {
-			keyPressed = "S";
-		} else if(destination.getX() > (int)this.getX()) {
-			keyPressed = "D";
-		} else if(destination.getX() < (int)this.getX()) {
-			keyPressed = "A";
-		} else if(destination.getY() < (int)this.getY()) {
+		if((int)destination.getY() < (int)this.getY()) {
 			keyPressed = "W";
-		} else if(destination.getY() > (int)this.getY()) {
+		} else if((int)destination.getY() > (int)this.getY()) {
 			keyPressed = "S";
-		} 
-		previousKeyPressed = keyPressed;
+		} else if((int)destination.getX() > (int)this.getX()) {
+			keyPressed = "D";
+		} else if((int)destination.getX() < (int)this.getX()) {
+			keyPressed = "A";
+		}  
 		return keyPressed;
 	}
 	
@@ -169,11 +167,19 @@ public class Guard extends Entity {
 	 */
 	public void update(StealthGame sg) {
 		this.determineCurrentPath(sg);
-		Vector destination;
-		if (currentPath.size() > 1)  {
-			destination = currentPath.get(1).getCenter(); 
-		} else {
-			destination = this.pathPlanners[this.nextPath].getGoal();
+		Vector destination = null;
+		if (this.currentPath != null) {
+			if (currentPath.size() > 1)  {
+				destination = currentPath.get(1).getCenter(); 
+			} else {
+				// determine goal
+				if (sg.isAlarmOn()) {
+					destination = new Vector(
+						sg.soldier.getX(), sg.soldier.getY());
+				} else {
+					destination = this.pathPlanners[this.nextPath].getGoal();
+				}
+			}
 		}
 		String keyPressed = this.getKeyPressed(destination);
 		boolean moved = false;
@@ -188,7 +194,7 @@ public class Guard extends Entity {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
-			this.setVelocity(-.2f, 0f);
+			this.setVelocity(-.1f, 0f);
 			moved = true;
 			stopped = false;
 		}
@@ -203,7 +209,7 @@ public class Guard extends Entity {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
-			this.setVelocity(+.2f, 0f);
+			this.setVelocity(+.1f, 0f);
 			moved = true;
 			stopped = false;
 		}
@@ -218,7 +224,7 @@ public class Guard extends Entity {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
-			this.setVelocity(0f, -.2f);
+			this.setVelocity(0f, -.1f);
 			moved = true;
 			stopped = false;
 		}
@@ -233,7 +239,7 @@ public class Guard extends Entity {
 				// reset it
 				this.setVelocity(0f, 0f);
 			}
-			this.setVelocity(0f, +.2f);
+			this.setVelocity(0f, +.1f);
 			moved = true;
 			stopped = false;
 		}
@@ -263,7 +269,7 @@ public class Guard extends Entity {
 	public void render(final Graphics g) {
 		super.render(g);
 		
-		if (this.debugPath) {
+		if (this.debugPath && this.currentPath != null) {
 			Dijkstra.render(currentPath, g);
 		}
 	}
