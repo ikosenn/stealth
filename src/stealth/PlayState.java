@@ -2,6 +2,8 @@ package stealth;
 
 
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -26,13 +28,22 @@ public class PlayState extends BasicGameState {
 		sg.soldier.render(g);
 		g.drawString("Run: " + sg.getHeat() / 1000 + " seconds",  810, 10);
 		g.drawString("Cooling down: " + sg.getCoolingDown() / 1000 + " seconds", 810, 40);
+		g.drawString("Bullets: " + sg.soldier.getBulletCount(), 710, 10);
+		
+		if (sg.getBullet() != null) {
+			ArrayList<Bullet> fired = sg.getBullet();
+			for (int i = 0; i < fired.size(); i++) {
+				Bullet tempBullet = fired.get(i);
+				tempBullet.render(g);
+			}
+		}
 		
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		StealthGame sg = (StealthGame)game;
-		sg.soldier.update(container, sg);
+		sg.soldier.update(container, sg, delta);
 		sg.alarm.update(sg);
 		for (int i = 0; i < sg.guards.size(); i++) {
 			sg.guards.get(i).update(sg);
@@ -48,6 +59,24 @@ public class PlayState extends BasicGameState {
 		
 		if (sg.getHeat() <= 0 && sg.isAlarmOn()) {
 			sg.soundAlarm(false);
+		}
+		
+		if (sg.getBullet() != null) {
+			ArrayList<Bullet> fired = sg.getBullet();
+			ArrayList<Bullet> toRemove = new ArrayList<>();
+			boolean removeBullet;
+			for (int i = 0; i < fired.size(); i++) {
+				Bullet tempBullet = fired.get(i);
+				removeBullet = tempBullet.update(delta);
+				if (removeBullet) {
+					toRemove.add(fired.get(i));
+				}
+			}
+			if (toRemove.size() > 0) {
+				for (int i = 0; i < fired.size(); i++) {
+					sg.removeBullet(fired.get(i));
+				}
+			}
 		}
 	}
 
