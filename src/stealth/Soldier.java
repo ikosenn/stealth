@@ -6,6 +6,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
 import jig.Entity;
@@ -29,11 +30,15 @@ public class Soldier extends Entity {
 	private boolean stopped = true;
 	private Dijkstra pathPlanner;
 	private Node currentNode; 
+	private int bullets; // the number of bullets the soldier has
+	private String previousSide = "";  // get the side the soldier is/ was facing
+	private Sound fireGun;
+	private Sound emptyGun;
 	
-	public Soldier() {
+	public Soldier(int bullets) {
 		super(20, 770);
 		velocity = new Vector(0f, 0f);
-		
+		this.bullets = bullets;
 		
 		SpriteSheet soldierSprites = ResourceManager.getSpriteSheet(StealthGame.SOLDIER_SRC, 60, 60);
 		rightStanding = soldierSprites.getSubImage(8, 11, 50, 50);
@@ -57,7 +62,9 @@ public class Soldier extends Entity {
 		// track the node the soldier is on for path finding
 		int startX = ((int)this.getY() - World.TOP_Y) / World.TILE_SIZE;
 		int startY =  (int)this.getX() / World.TILE_SIZE;
-		this.currentNode = new Node(startX, startY);			
+		this.currentNode = new Node(startX, startY);	
+		this.fireGun = ResourceManager.getSound(StealthGame.GUN_SHOT_SRC);
+		this.emptyGun = ResourceManager.getSound(StealthGame.GUN_EMPTY_SRC);
 	}
 	
 	/**
@@ -126,6 +133,36 @@ public class Soldier extends Entity {
 		}
 	}
 	
+	/**
+	 * Shoots the gun if the soldier has bullets left.
+	 * @param game. Hold the current state of the game
+	 */
+	private void weaponsFree(StealthGame game) {
+		if (this.bullets > 0) {
+			Bullet bullet;
+			if (this.previousSide == "LEFT") {
+				bullet = new Bullet(this.getX() - 10f, this.getY(), this.previousSide);
+			} else {
+				bullet = new Bullet(this.getX() + 10f, this.getY(), this.previousSide);
+			}
+			
+			bullet.fire();
+			this.fireGun.play();
+			this.bullets -= 1;
+			game.bullets.add(bullet);
+		} else {
+			this.emptyGun.play();
+		}
+	}
+	
+	
+	/**
+	 * Bullet getter
+	 * @return int. The number of bullets the soldier has
+	 */
+	public int getBulletCount() {
+		return this.bullets;
+	}
 	
 	/**
 	 * Updates the position of the soldier based on the users input. 
@@ -139,7 +176,7 @@ public class Soldier extends Entity {
 	 * @param game
 	 * Holds the state of the game.
 	 */
-	public void update(GameContainer container, StealthGame game) {
+	public void update(GameContainer container, StealthGame game, int delta) {
 		Input input = container.getInput();
 		this.setPathToMe(game);
 		boolean moved = false;
@@ -149,6 +186,7 @@ public class Soldier extends Entity {
 				resetEntity();
 				addAnimation(soldierLeftAnimation);
 				orientation = "LEFT";
+				previousSide = "LEFT";
 			}
 			// check if the soldier was moving to the right/ up /down
 			if (this.getVelocity().getX() > 0f || Math.abs(this.getVelocity().getY()) > 0) {
@@ -164,6 +202,7 @@ public class Soldier extends Entity {
 				resetEntity();
 				addAnimation(soldierRightAnimation);
 				orientation = "RIGHT";
+				previousSide = "RIGHT";
 			}
 			// check if the soldier was moving to the left/ up/ down
 			if (this.getVelocity().getX() < 0f || Math.abs(this.getVelocity().getY()) > 0) {
@@ -195,14 +234,20 @@ public class Soldier extends Entity {
 			stopped = false;
 		}
 		
+		if (input.isKeyPressed(Input.KEY_SPACE)) {
+			this.weaponsFree(game);
+		}
+		
 		translate(this.getVelocity());
 		// reset velocity and image if no key is pressed
 		if (!moved && !stopped) {
 			resetEntity();
 			if (orientation == "LEFT") {
+				previousSide = "LEFT";
 				addImageWithBoundingBox(leftStanding);
 			} else if (orientation == "RIGHT") {
 				addImageWithBoundingBox(rightStanding);
+				previousSide = "RIGHT";
 			} else {
 				addImageWithBoundingBox(rightStanding);
 			}

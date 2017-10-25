@@ -26,6 +26,11 @@ import jig.Vector;
  * Soldiers/ Guards resource courtesy of Master484
  * https://opengameart.org/content/space-soldier-m484-games
  * 
+ * Gun shot sound courtesy of Xenonn
+ * http://freesound.org/people/Xenonn/sounds/128301/
+ * 
+ * Empty gun shot sound courtesy of PhreaKsAccount
+ * http://freesound.org/people/PhreaKsAccount/sounds/46265/
  * 
  * @author peculiaryak
  *
@@ -41,6 +46,8 @@ public class StealthGame extends StateBasedGame {
 	public final static String GAME_TITLE_SRC = "stealth/resources/stealth.png";
 	public final static String ALARM_SRC = "stealth/resources/alarm.wav";
 	public final static String SOLDIER_SRC = "stealth/resources/soldiers.png";
+	public final static String GUN_SHOT_SRC = "stealth/resources/gunshot.wav";
+	public final static String GUN_EMPTY_SRC = "stealth/resources/blanks.wav";
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
@@ -57,6 +64,7 @@ public class StealthGame extends StateBasedGame {
 	ArrayList<Guard> guards = new ArrayList<>();
 	Alarm alarm = new Alarm();
 	Soldier soldier;
+	ArrayList<Bullet> bullets = new ArrayList<>();
 		
 	public StealthGame(String title) {
 		
@@ -76,6 +84,8 @@ public class StealthGame extends StateBasedGame {
 		ResourceManager.loadImage(GAME_TITLE_SRC);
 		ResourceManager.loadImage(SOLDIER_SRC);
 		ResourceManager.loadSound(ALARM_SRC);
+		ResourceManager.loadSound(GUN_SHOT_SRC);
+		ResourceManager.loadSound(GUN_EMPTY_SRC);
 	}
 
 	public static void main(String[] args) {
@@ -143,7 +153,7 @@ public class StealthGame extends StateBasedGame {
 			tempGuard.generatePatrolPaths(this.world);
 			guards.add(tempGuard);
 		}
-		this.soldier = new Soldier();
+		this.soldier = new Soldier(patrolRoutes.length - 1);
 	}
 	
 	/**
@@ -225,6 +235,23 @@ public class StealthGame extends StateBasedGame {
 		return this.score;
 	}
 
-	
+	/**
+	 * Contains the bullets fired by the soldier
+	 * @return ArrayList containing the bullets otherwise return null.
+	 */
+	public ArrayList<Bullet> getBullet() {
+		if (this.bullets != null && this.bullets.size() > 0) {
+			return this.bullets;
+		}
+		return null;
+	}
+
+	/**
+	 * removes the bullet from the bullet arraylist
+	 * @param bullet. The bullet to remove
+	 */
+	public void removeBullet(Bullet bullet) {
+		this.bullets.remove(bullet);
+	}
 	
 }
