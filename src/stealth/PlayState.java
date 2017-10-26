@@ -33,6 +33,7 @@ public class PlayState extends BasicGameState {
 		g.drawString("Cooling down: " + sg.getCoolingDown() / 1000 + " seconds", 810, 40);
 		g.drawString("Bullets: " + sg.soldier.getBulletCount(), 710, 10);
 		g.drawString("Life: " + sg.getLife(), 710, 40);
+		g.drawString("PowerUp: " + sg.powerups.size(), 510, 40);
 		if (sg.getBullet() != null) {
 			ArrayList<Bullet> fired = sg.getBullet();
 			for (int i = 0; i < fired.size(); i++) {
@@ -83,6 +84,12 @@ public class PlayState extends BasicGameState {
 			}
 		}
 		
+		if (sg.powerups != null && sg.powerups.size() > 0) {
+			for (int i = 0; i < sg.powerups.size(); i++) {
+				sg.powerups.get(i).update(delta);
+			}
+		}
+		
 		for (int i = 0; i < sg.walls.size(); i++) {
 			sg.walls.get(i).update(sg);
 		}
@@ -93,6 +100,12 @@ public class PlayState extends BasicGameState {
 			}
 		}
 		for (Iterator<Guard> i = sg.guards.iterator(); i.hasNext();) {
+			if (!i.next().isActive()) {
+				i.remove();
+			}
+		}
+		
+		for (Iterator<PowerUp> i = sg.powerups.iterator(); i.hasNext();) {
 			if (!i.next().isActive()) {
 				i.remove();
 			}

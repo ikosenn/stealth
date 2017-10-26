@@ -32,6 +32,9 @@ import jig.Vector;
  * Empty gun shot sound courtesy of PhreaKsAccount
  * http://freesound.org/people/PhreaKsAccount/sounds/46265/
  * 
+ * Powerup sound courtesty of unfa
+ * http://freesound.org/people/unfa/sounds/256332/
+ * 
  * @author peculiaryak
  *
  */
@@ -52,6 +55,7 @@ public class StealthGame extends StateBasedGame {
 	public final static String CHEST_OPEN_SRC = "stealth/resources/chest_open.png";
 	public final static String CHEST_CLOSED_SRC = "stealth/resources/chest_closed.png";
 	public static final String GAMEOVER_BANNER_RSC = "stealth/resources/gameover.png";
+	public final static String HORROR_PULSATING_SRC = "stealth/resources/horror_p.wav";
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
@@ -72,6 +76,7 @@ public class StealthGame extends StateBasedGame {
 	Soldier soldier;
 	ArrayList<Bullet> bullets = new ArrayList<>();
 	ArrayList<Wall> walls = new ArrayList<>();
+	ArrayList<PowerUp> powerups = new ArrayList<>();
 	TreasureChest treasureChest;
 		
 	public StealthGame(String title) {
@@ -98,6 +103,7 @@ public class StealthGame extends StateBasedGame {
 		ResourceManager.loadSound(ALARM_SRC);
 		ResourceManager.loadSound(GUN_SHOT_SRC);
 		ResourceManager.loadSound(GUN_EMPTY_SRC);
+		ResourceManager.loadSound(HORROR_PULSATING_SRC);
 	}
 
 	public static void main(String[] args) {
@@ -120,7 +126,22 @@ public class StealthGame extends StateBasedGame {
 	public boolean isAlarmOn() {
 		return isAlarmOn;
 	}
-
+	
+	
+	/**
+	 * Checks for an active powerup
+	 * @return true if there is an active powerup
+	 */
+	private boolean activePowerUp( ) {
+		if (this.powerups != null && this.powerups.size() > 0) {
+			for (int i = 0; i < this.powerups.size(); i++) {
+				if (this.powerups.get(i).isActive()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	/*
 	 * set the state of the alarm 
@@ -128,7 +149,7 @@ public class StealthGame extends StateBasedGame {
 	 * @param state. The state to set the alarm
 	 */
 	public void soundAlarm(boolean state) {
-		if (heat <= 0 && coolingDown <= 0 && state) {
+		if (heat <= 0 && coolingDown <= 0 && state && !this.activePowerUp()) {
 			this.isAlarmOn = true;
 			heat = 10000;
 			coolingDown = 5000;

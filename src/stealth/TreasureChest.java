@@ -1,5 +1,7 @@
 package stealth;
 
+import java.util.Random;
+
 import org.newdawn.slick.Image;
 
 import jig.Collision;
@@ -28,12 +30,17 @@ public class TreasureChest extends Entity {
 	/**
 	 * Checks if the soldier collides with the chest. 
 	 * if he does then we should open it
-	 * @param soldier
+	 * @param game. The current game state
 	 */
-	private void checkCollisionSoldier(Entity soldier) {
+	private void checkCollisionSoldier(StealthGame game) {
+		Soldier soldier = game.soldier;
 		Collision isPen = this.collides(soldier);
 		if (isPen != null) {
 			this.isOpen = true;
+			Random random = new Random();
+			if (random.nextBoolean()) {
+				game.powerups.add(new PowerUp());
+			}
 		}
 	}
 	
@@ -42,10 +49,12 @@ public class TreasureChest extends Entity {
 	 * @param game. The current game state.
 	 */
 	public void update(StealthGame game) {
-		this.checkCollisionSoldier(game.soldier);
+	
 		if (this.isOpen) {
 			removeImage(this.closedChest);
 			addImageWithBoundingBox(this.openChest);
+		} else {
+			this.checkCollisionSoldier(game);
 		}
 	}
 	
