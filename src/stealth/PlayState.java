@@ -3,12 +3,14 @@ package stealth;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 public class PlayState extends BasicGameState {
 	
@@ -29,7 +31,7 @@ public class PlayState extends BasicGameState {
 		g.drawString("Run: " + sg.getHeat() / 1000 + " seconds",  810, 10);
 		g.drawString("Cooling down: " + sg.getCoolingDown() / 1000 + " seconds", 810, 40);
 		g.drawString("Bullets: " + sg.soldier.getBulletCount(), 710, 10);
-		
+		g.drawString("Life: " + sg.getLife(), 710, 40);
 		if (sg.getBullet() != null) {
 			ArrayList<Bullet> fired = sg.getBullet();
 			for (int i = 0; i < fired.size(); i++) {
@@ -76,6 +78,21 @@ public class PlayState extends BasicGameState {
 				for (int i = 0; i < fired.size(); i++) {
 					sg.removeBullet(fired.get(i));
 				}
+			}
+		}
+		
+		for (int i = 0; i < sg.walls.size(); i++) {
+			sg.walls.get(i).update(sg);
+		}
+		
+		for (Iterator<Bullet> i = sg.bullets.iterator(); i.hasNext();) {
+			if (!i.next().isActive()) {
+				i.remove();
+			}
+		}
+		for (Iterator<Guard> i = sg.guards.iterator(); i.hasNext();) {
+			if (!i.next().isActive()) {
+				i.remove();
 			}
 		}
 	}

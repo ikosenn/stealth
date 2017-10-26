@@ -65,6 +65,7 @@ public class StealthGame extends StateBasedGame {
 	Alarm alarm = new Alarm();
 	Soldier soldier;
 	ArrayList<Bullet> bullets = new ArrayList<>();
+	ArrayList<Wall> walls = new ArrayList<>();
 		
 	public StealthGame(String title) {
 		
@@ -125,6 +126,13 @@ public class StealthGame extends StateBasedGame {
 			this.isAlarmOn = false;
 		}
 	}
+	/**
+	 * reset the counters to zero. Useful when the soldier is killed
+	 */
+	public void resetCounter() {
+		this.heat = 0;
+		this.coolingDown = 0;
+	}
 	
 	/**
 	 * 
@@ -153,7 +161,16 @@ public class StealthGame extends StateBasedGame {
 			tempGuard.generatePatrolPaths(this.world);
 			guards.add(tempGuard);
 		}
-		this.soldier = new Soldier(patrolRoutes.length - 1);
+		this.soldier = new Soldier(world.getStartPos(), patrolRoutes.length - 1);
+		// create walls
+		Node[][] tileNodes = world.getNodes();
+		for (int i = 0; i < tileNodes.length; i++) {
+			for (int j = 0; j < tileNodes[0].length; j++) {
+				if (tileNodes[i][j].isBlocked()) {
+					walls.add(new Wall(tileNodes[i][j].getCenter()));
+				}
+			}
+		}
 	}
 	
 	/**

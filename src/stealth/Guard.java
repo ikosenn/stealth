@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+import jig.Collision;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -35,6 +36,7 @@ public class Guard extends Entity {
 	private boolean debugDetectionRange = false; 
 	private int detectionRange = 4;  // how many blocks I can see; 
 	private ArrayList<Node> rangeVisible;
+	private boolean active = true;
 	
 	
 	public Guard(Vector[] patrolPoints) {
@@ -44,15 +46,15 @@ public class Guard extends Entity {
 		this.patrolPoints = patrolPoints;
 		
 		SpriteSheet guardSprites = ResourceManager.getSpriteSheet(StealthGame.SOLDIER_SRC, 60, 60);
-		rightStanding = guardSprites.getSubImage(8, 400, 50, 50);
-		leftStanding = guardSprites.getSubImage(59, 456, 50, 50);
+		rightStanding = guardSprites.getSubImage(13, 400, 40, 50);
+		leftStanding = guardSprites.getSubImage(67, 456, 40, 50);
 		
 		for (int i=0; i < 8; i++) {
 			// right
 			int increment = i * 51;
-			rightDirection[i] = guardSprites.getSubImage(8 + increment, 456, 50, 50);
+			rightDirection[i] = guardSprites.getSubImage(13 + increment, 456, 40, 50);
 			//left 
-			leftDirection[i] = guardSprites.getSubImage(8 + increment, 512, 50, 50);
+			leftDirection[i] = guardSprites.getSubImage(13 + increment, 512, 40, 50);
 		}
 		
 		// left side images
@@ -76,6 +78,21 @@ public class Guard extends Entity {
 		}
 	}
 	
+	/**
+	 * active getter
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+	
+	/**
+	 * active setter
+	 * @param state. The new state to change active to.
+	 */
+	public void setActive(boolean state) {
+		this.active = state;
+	}
+		
 	/**
 	 * Velocity setter
 	 * @param x The value to set the vector's x value,
@@ -151,17 +168,32 @@ public class Guard extends Entity {
 		if (destination == null) {
 			return keyPressed;
 		}
-		// always prefer moving down if the 
-		if((int)destination.getY() < (int)this.getY()) {
-			keyPressed = "W";
-		} else if((int)destination.getY() > (int)this.getY()) {
-			keyPressed = "S";
-		} else if((int)destination.getX() > (int)this.getX()) {
+		if ((int)destination.getX() > (int)this.getX()) {
 			keyPressed = "D";
-		} else if((int)destination.getX() < (int)this.getX()) {
+		} else if ((int)destination.getX() < (int)this.getX()) {
 			keyPressed = "A";
-		}  
+		} else if ((int)destination.getY() < (int)this.getY()) {
+			keyPressed = "W";
+		} else if ((int)destination.getY() > (int)this.getY()) {
+			keyPressed = "S";
+		}
 		return keyPressed;
+	}
+	
+	/**
+	 * Check if I have been shot
+	 * @param sg. The game state
+	 */
+	private void checkBulletCollision(StealthGame sg) {
+		if (sg.bullets !=null && sg.bullets.size() > 0) {
+			for (int i = 0; i < sg.bullets.size(); i++) {
+				Collision isPen = this.collides(sg.bullets.get(i));
+				if (isPen != null) {
+					this.setActive(false);
+					sg.bullets.get(i).setActive(false);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -169,6 +201,7 @@ public class Guard extends Entity {
 	 * @param sg. Contains the current game state
 	 */
 	public void update(StealthGame sg) {
+		this.checkBulletCollision(sg);
 		this.determineCurrentPath(sg);
 		this.alertBase(sg);
 		Vector destination = null;
@@ -183,9 +216,10 @@ public class Guard extends Entity {
 				} else {
 					destination = this.pathPlanners[this.nextPath].getGoal();
 				}
+				
 			}
 		}
-		String keyPressed = this.getKeyPressed(destination);
+		String keyPressed  = this.getKeyPressed(destination);
 		boolean moved = false;
 		if (keyPressed == "A") {
 			if (orientation != "LEFT") {

@@ -24,6 +24,7 @@ public class World {
 	private TiledMap map;
 	private Node[][] nodes;
 	private int level;
+	private Vector startPos; // where the soldier should start from
 	
 	/**
 	 * World constructor
@@ -94,6 +95,7 @@ public class World {
 	private void createLevelOne() throws SlickException {
 		this.map = new TiledMap(World.levelOneTile); 
 		this.setPatrolRoutes();
+		this.startPos = new Vector(20, 770); 
 	}
 	
 	/**
@@ -112,6 +114,14 @@ public class World {
 	 */
 	public Vector[][] getPatrolRoutes() {
 		return this.patrolRoutes;
+	}
+	
+	/**
+	 * Get the soldier's start position for the level
+	 * @return Vector. The soldiers start position
+	 */
+	public Vector getStartPos() {
+		return this.startPos;
 	}
 	
 	/**

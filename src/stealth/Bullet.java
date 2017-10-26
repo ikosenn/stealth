@@ -14,15 +14,32 @@ import jig.Vector;
 public class Bullet extends Entity {
 	private String direction;  // the direction the bullet should travel
 	private Vector velocity;
+	private boolean active;
 	
 	public Bullet(float x, float y, String direction) {
 		super(x, y);
 		this.direction = direction;
 		this.velocity = new Vector(0f, 0f);
+		this.active = true;  // used to remove it out of the ArrayList on collisions
 		SpriteSheet bulletSprites = ResourceManager.getSpriteSheet(StealthGame.SOLDIER_SRC, 60, 60);
 		addImageWithBoundingBox(bulletSprites.getSubImage(188, 248, 10, 8));
 	}
 	
+	
+	/**
+	 * active getter
+	 */
+	public boolean isActive() {
+		return this.active;
+	}
+	
+	/**
+	 * active setter
+	 * @param state. The new state to change active to.
+	 */
+	public void setActive(boolean state) {
+		this.active = state;
+	}
 	
 	/**
 	 * set the velocity of the bullet
