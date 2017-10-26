@@ -48,6 +48,8 @@ public class StealthGame extends StateBasedGame {
 	public final static String SOLDIER_SRC = "stealth/resources/soldiers.png";
 	public final static String GUN_SHOT_SRC = "stealth/resources/gunshot.wav";
 	public final static String GUN_EMPTY_SRC = "stealth/resources/blanks.wav";
+	public final static String CHEST_OPEN_SRC = "stealth/resources/chest_open.png";
+	public final static String CHEST_CLOSED_SRC = "stealth/resources/chest_closed.png";
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
@@ -66,6 +68,7 @@ public class StealthGame extends StateBasedGame {
 	Soldier soldier;
 	ArrayList<Bullet> bullets = new ArrayList<>();
 	ArrayList<Wall> walls = new ArrayList<>();
+	TreasureChest treasureChest;
 		
 	public StealthGame(String title) {
 		
@@ -82,6 +85,8 @@ public class StealthGame extends StateBasedGame {
 		
 		// preload resources 
 		ResourceManager.loadImage(MENU_BUTTONS_SRC);
+		ResourceManager.loadImage(CHEST_CLOSED_SRC);
+		ResourceManager.loadImage(CHEST_OPEN_SRC);
 		ResourceManager.loadImage(GAME_TITLE_SRC);
 		ResourceManager.loadImage(SOLDIER_SRC);
 		ResourceManager.loadSound(ALARM_SRC);
@@ -171,6 +176,7 @@ public class StealthGame extends StateBasedGame {
 				}
 			}
 		}
+		this.treasureChest = new TreasureChest(this.world.getTreasureChestPos());
 	}
 	
 	/**

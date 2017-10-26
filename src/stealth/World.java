@@ -25,6 +25,7 @@ public class World {
 	private Node[][] nodes;
 	private int level;
 	private Vector startPos; // where the soldier should start from
+	private Vector treasureChestPos; // where the treasure chest should be placed
 	
 	/**
 	 * World constructor
@@ -96,6 +97,7 @@ public class World {
 		this.map = new TiledMap(World.levelOneTile); 
 		this.setPatrolRoutes();
 		this.startPos = new Vector(20, 770); 
+		this.treasureChestPos = new Vector(932, 660);
 	}
 	
 	/**
@@ -122,6 +124,14 @@ public class World {
 	 */
 	public Vector getStartPos() {
 		return this.startPos;
+	}
+	
+	/**
+	 * Where to draw the treasure chest.
+	 * @return Vector. The area to draw the treasure chest
+	 */
+	public Vector getTreasureChestPos() {
+		return this.treasureChestPos;
 	}
 	
 	/**

@@ -24,6 +24,7 @@ public class PlayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		StealthGame sg = (StealthGame)game;
 		sg.world.render(g);
+		sg.treasureChest.render(g);
 		for (int i = 0; i < sg.guards.size(); i++) {
 			sg.guards.get(i).render(g);
 		}
@@ -47,6 +48,7 @@ public class PlayState extends BasicGameState {
 		StealthGame sg = (StealthGame)game;
 		sg.soldier.update(container, sg, delta);
 		sg.alarm.update(sg);
+		sg.treasureChest.update(sg);
 		for (int i = 0; i < sg.guards.size(); i++) {
 			sg.guards.get(i).update(sg);
 		}
