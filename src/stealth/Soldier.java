@@ -281,6 +281,12 @@ public class Soldier extends Entity {
 			this.weaponsFree(game);
 		}
 		
+		if (input.isKeyPressed(Input.KEY_LSHIFT)) {
+			if (game.powerups != null && game.powerups.size() > 0) {
+				game.powerups.get(0).setInUse();
+			}
+		}
+		
 		translate(this.getVelocity());
 		// reset velocity and image if no key is pressed
 		if (!moved && !stopped) {
