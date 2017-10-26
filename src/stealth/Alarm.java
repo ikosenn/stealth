@@ -24,6 +24,8 @@ public class Alarm {
 	public void update(StealthGame game) {
 		if (game.isAlarmOn() && !this.alarm.playing()) {
 			this.alarm.play();
+		} else if (!game.isAlarmOn() && this.alarm.playing()) {
+			this.alarm.stop();
 		}
 	}
 }

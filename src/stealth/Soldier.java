@@ -9,6 +9,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
+import jig.Collision;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -34,22 +35,24 @@ public class Soldier extends Entity {
 	private String previousSide = "";  // get the side the soldier is/ was facing
 	private Sound fireGun;
 	private Sound emptyGun;
+	private Vector startPos;
 	
-	public Soldier(int bullets) {
-		super(20, 770);
+	public Soldier(Vector startPos, int bullets) {
+		super(startPos.getX(), startPos.getY());
+		this.startPos = startPos;
 		velocity = new Vector(0f, 0f);
 		this.bullets = bullets;
 		
 		SpriteSheet soldierSprites = ResourceManager.getSpriteSheet(StealthGame.SOLDIER_SRC, 60, 60);
-		rightStanding = soldierSprites.getSubImage(8, 11, 50, 50);
-		leftStanding = soldierSprites.getSubImage(59, 11, 50, 50);
+		rightStanding = soldierSprites.getSubImage(13, 11, 40, 50);
+		leftStanding = soldierSprites.getSubImage(67, 11, 40, 50);
 		
 		for (int i=0; i < 8; i++) {
 			// right
 			int increment = i * 51;
-			rightDirection[i] = soldierSprites.getSubImage(8 + increment, 67, 50, 50);
+			rightDirection[i] = soldierSprites.getSubImage(13 + increment, 67, 40, 50);
 			//left 
-			leftDirection[i] = soldierSprites.getSubImage(8 + increment, 123, 50, 50);
+			leftDirection[i] = soldierSprites.getSubImage(13 + increment, 123, 40, 50);
 		}
 		
 		// left side images
@@ -165,6 +168,45 @@ public class Soldier extends Entity {
 	}
 	
 	/**
+	 * 
+	 * @return false if it has reached the bounds of the game otherwise true
+	 */
+	private boolean checkCollision(String direction, StealthGame game) {
+		// prevent from going into the walls 
+		if (this.getCoarseGrainedMaxX() >= StealthGame.SCREEN_WIDTH && direction == "RIGHT") {
+			this.setPosition(StealthGame.SCREEN_WIDTH - 15, this.getY());
+			return false;
+		}
+		if (this.getCoarseGrainedMinX() <= 0 && direction == "LEFT") {
+			this.setPosition(0 + 15, this.getY());
+			return false;
+		}
+		if (this.getCoarseGrainedMinY() <= World.TOP_Y && direction == "UP") {
+			this.setPosition(this.getX(), World.TOP_Y + 20);
+			return false;
+		}
+		if (this.getCoarseGrainedMaxY() >= StealthGame.SCREEN_HEIGHT && direction == "DOWN") {
+			this.setPosition(this.getX(), StealthGame.SCREEN_HEIGHT - 25);
+			return false;
+		}
+		return true;
+	}
+	
+	private void checkGuardCollision(StealthGame sg) {
+		if (sg.guards !=null && sg.guards.size() > 0) {
+			for (int i = 0; i < sg.guards.size(); i++) {
+				Collision isPen = this.collides(sg.guards.get(i));
+				if (isPen != null) {
+					sg.reduceLives();
+					sg.soundAlarm(false);
+					this.setPosition(startPos);
+					sg.resetCounter();
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Updates the position of the soldier based on the users input. 
 	 * 
 	 * @param container
@@ -177,11 +219,12 @@ public class Soldier extends Entity {
 	 * Holds the state of the game.
 	 */
 	public void update(GameContainer container, StealthGame game, int delta) {
+		this.checkGuardCollision(game);
 		Input input = container.getInput();
 		this.setPathToMe(game);
 		boolean moved = false;
 		
-		if ((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT))) {
+		if ((input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) && this.checkCollision("LEFT", game)) {
 			if (orientation != "LEFT") {
 				resetEntity();
 				addAnimation(soldierLeftAnimation);
@@ -197,7 +240,7 @@ public class Soldier extends Entity {
 			moved = true;
 			stopped = false;
 		}
-		if ((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT))){
+		if ((input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) && this.checkCollision("RIGHT", game)){
 			if (orientation != "RIGHT") {
 				resetEntity();
 				addAnimation(soldierRightAnimation);
@@ -213,7 +256,7 @@ public class Soldier extends Entity {
 			moved = true;
 			stopped = false;
 		}
-		if ((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP))) {
+		if ((input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) && this.checkCollision("UP", game)) {
 			// check if the soldier was moving down/ left/ right
 			if (this.getVelocity().getY() > 0f || Math.abs(this.getVelocity().getX()) > 0) {
 				// reset it
@@ -223,7 +266,7 @@ public class Soldier extends Entity {
 			moved = true;
 			stopped = false;
 		}
-		if ((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN))){
+		if ((input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) && this.checkCollision("DOWN", game)){
 			// check if the soldier was moving up/ left/ right
 			if (this.getVelocity().getY() < 0f || Math.abs(this.getVelocity().getX()) > 0) {
 				// reset it
