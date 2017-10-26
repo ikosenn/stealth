@@ -41,6 +41,7 @@ public class StealthGame extends StateBasedGame {
 	public final static int MENU_STATE_ID = 0;
 	public final static int SCORE_STATE_ID = 1;
 	public final static int PLAY_STATE_ID = 2;
+	public static final int GAMEOVERSTATE_ID = 3;
 	
 	public final static String MENU_BUTTONS_SRC = "stealth/resources/menu_buttons.png";
 	public final static String GAME_TITLE_SRC = "stealth/resources/stealth.png";
@@ -50,9 +51,12 @@ public class StealthGame extends StateBasedGame {
 	public final static String GUN_EMPTY_SRC = "stealth/resources/blanks.wav";
 	public final static String CHEST_OPEN_SRC = "stealth/resources/chest_open.png";
 	public final static String CHEST_CLOSED_SRC = "stealth/resources/chest_closed.png";
+	public static final String GAMEOVER_BANNER_RSC = "stealth/resources/gameover.png";
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
+	public static final int MAX_LEVELS = 3;
+	public static final int MAX_LIVES = 3;
 	
 	private boolean isAlarmOn = false;
 	private int level = 1;
@@ -82,12 +86,14 @@ public class StealthGame extends StateBasedGame {
 		addState(new MenuState());
 		addState(new HighScoreState());
 		addState(new PlayState());
+		addState(new GameOverState());
 		
 		// preload resources 
 		ResourceManager.loadImage(MENU_BUTTONS_SRC);
 		ResourceManager.loadImage(CHEST_CLOSED_SRC);
 		ResourceManager.loadImage(CHEST_OPEN_SRC);
 		ResourceManager.loadImage(GAME_TITLE_SRC);
+		ResourceManager.loadImage(GAMEOVER_BANNER_RSC);
 		ResourceManager.loadImage(SOLDIER_SRC);
 		ResourceManager.loadSound(ALARM_SRC);
 		ResourceManager.loadSound(GUN_SHOT_SRC);
@@ -248,6 +254,15 @@ public class StealthGame extends StateBasedGame {
 	 */
 	public int getLife() {
 		return this.life;
+	}
+	
+	
+	/**
+	 * 
+	 * Life setter
+	 */
+	public void setLife() {
+		this.life = MAX_LIVES;
 	}
 	
 	/**
