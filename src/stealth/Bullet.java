@@ -64,9 +64,9 @@ public class Bullet extends Entity {
 	 */
 	public void fire() {
 		if (this.direction == "LEFT") {
-			this.setVelocity(new Vector(-0.2f, 0f));
+			this.setVelocity(new Vector(-0.4f, 0f));
 		} else {
-			this.setVelocity(new Vector(0.2f, 0f));
+			this.setVelocity(new Vector(0.4f, 0f));
 		}
 	}
 	
