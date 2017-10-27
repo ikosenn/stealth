@@ -22,6 +22,7 @@ public class World {
 	private Vector[][] patrolRoutes;
 	private static final String levelOneTile = "stealth/resources/levelone.tmx";
 	private static final String levelTwoTile = "stealth/resources/leveltwo.tmx";
+	private static final String levelThreeTile = "stealth/resources/levelthree.tmx";
 	private TiledMap map;
 	private Node[][] nodes;
 	private int level;
@@ -71,6 +72,8 @@ public class World {
 				this.createLevelOne();
 			} else if (this.level == 2) {
 				this.createLevelTwo();
+			} else if (this.level == 3) {
+				this.createLevelThree();
 			}
 		} catch (SlickException e) {	
 			e.printStackTrace();
@@ -96,7 +99,15 @@ public class World {
 			};
 			patrolRoutes = new Vector[2][2];
 			patrolRoutes = levelPatrolRoutes;
-		}
+		} else if (this.level == 3) {
+			Vector[][] levelPatrolRoutes = {
+					{new Vector(990, 770), new Vector(790, 770)},
+					{new Vector(570, 650), new Vector(20, 200)},
+					{new Vector(840, 90), new Vector(300, 430)}
+				};
+				patrolRoutes = new Vector[3][2];
+				patrolRoutes = levelPatrolRoutes;
+			}
 	}
 	
 	/**
@@ -123,6 +134,19 @@ public class World {
 		this.startPos = new Vector(20, 90);
 		this.goalPos = new Vector(990, 770);
 		this.treasureChestPos = new Vector(450, 450);
+	}
+	
+	/**
+	 * Responsible for bringing everything together that is required to create 
+	 * the third level. 
+	 * @throws SlickException 
+	 */
+	private void createLevelThree() throws SlickException {
+		this.map = new TiledMap(World.levelThreeTile); 
+		this.setPatrolRoutes();
+		this.startPos = new Vector(20, 770);
+		this.goalPos = new Vector(990, 770);
+		this.treasureChestPos = new Vector(550, 750);
 	}
 	
 	/**
