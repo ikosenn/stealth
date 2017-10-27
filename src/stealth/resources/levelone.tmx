@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="32" height="23" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" source="terrain.tsx"/>
+ <layer name="grass" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE3vBwMDwYgDwVUYIHgi7B4P9o3gUj+JRPIpH8SgexSMVD3Q7bKDtBwDa2xiOgAsAAA==
+  </data>
+ </layer>
+ <layer name="rocks" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE2NgGAWDCfQyIjA2sA2HOC3cgA2cprH9+OymBxho+weDGwbafmq6AZRf6JFncAFQfqF1nqE1QI4HeqcL5HQwEOkS3e8D5f+BypPo9g8GN5ACqJH3KfEzvrxPz3IJm130KJdg9sLsondZjO7HwVYWAwBF4HvzgAsAAA==
+  </data>
+ </layer>
+ <layer name="walls" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE92T3Q4AEAiFeXOP7sJsZonqEM7Whdr60k8IRSkW61X9VAyp1/itf2Rc/tn7NH8kVP9/5Z+cP5Xbm8/1BMHXSJPrFr7UUHypJHsord+Db90XxH+8+ZYb187DWi8X3ykUX7OnyH5681Gy3vMO/oplfUuOwYALAAA=
+  </data>
+ </layer>
+</map>
