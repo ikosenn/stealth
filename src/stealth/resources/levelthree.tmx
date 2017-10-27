@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="32" height="23" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" source="terrain.tsx"/>
+ <layer name="grass" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE51WWw6DMAzr7n++3SEMuMMmjUqeZycpH5FQKHYeTso2xthu2lHYXdyKp/KjxWUZhsKLG3lneHgm6MxJ8XbyVLkgDufPxtjs43zxO1fzIE73HOO3Fiv1znSiMFz+XX6nCfRNP/dx+nfiPUUfs/wzXVe5ov8EbqVXl7/TgouZ37PGFT9i7QlnpoUY/zG4fq7UulMfN59uflW8nbiyuqPtxME1RU7WcYY/NTTPqZ2jas27A/vKNVG7bzVft5tWtK9mQO211biU9hnLxXYArtpHHf2o3qAOOjshq2Nc8ak5VvOBO7i6r6saZd+5mezwV3Hw966nrB/GZ3+18/hd567ncy7X6p7nPnRqhdyvjz0fX6v4O7HyDuE9gjFMXuRX/wiqB3zG/V+o3cr8bx8XF8KACwAA
+  </data>
+ </layer>
+ <layer name="walls" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE8WV0Q2AMAhE24HUHdQd1G3q5tKPRtKUtiDFS+7HBJ7hEIN3LhAu6favJcprKbYV31qj+RP0nsHLR0Ytg5pWqNnA+0/8A2pO8GXAl2TZW5PzS7la8rVylfJ7c231p+5Pi98rbiZ/8zX64N3U5ieneeTPo/FucvPX4OPd1OJjcW76CD7n2x/B59x0qn9rhnmmUlH1vTMcxde6n1J+FOefSlmDX3sHa/4DPRMsTIALAAA=
+  </data>
+ </layer>
+</map>

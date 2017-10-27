@@ -59,7 +59,7 @@ public class StealthGame extends StateBasedGame {
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
-	public static final int MAX_LEVELS = 2;
+	public static final int MAX_LEVELS = 3;
 	public static final int MAX_LIVES = 3;
 	
 	private boolean isAlarmOn = false;
