@@ -59,7 +59,7 @@ public class StealthGame extends StateBasedGame {
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
-	public static final int MAX_LEVELS = 1;
+	public static final int MAX_LEVELS = 2;
 	public static final int MAX_LIVES = 3;
 	
 	private boolean isAlarmOn = false;
@@ -186,7 +186,9 @@ public class StealthGame extends StateBasedGame {
 	 * create the world based on the current level
 	 */
 	public void createWorld() {
+		guards = new ArrayList<>();
 		world = new World(this.getLevel());
+		walls = new ArrayList<>();
 		Vector[][] patrolRoutes = this.world.getPatrolRoutes();
 		for (int i = 0; i < patrolRoutes.length; i++) {
 			Guard tempGuard = new Guard(patrolRoutes[i]);

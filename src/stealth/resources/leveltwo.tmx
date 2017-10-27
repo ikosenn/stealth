@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="32" height="23" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" source="terrain.tsx"/>
+ <layer name="floor" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE+3WoQEAAAjDsPEv9+4eMNwwQUV0bV2SVyvD4T4AAAB+SH/n9QcVuMYBgAsAAA==
+  </data>
+ </layer>
+ <layer name="walls" width="32" height="23">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAE92UUQ6DMAiG2xs576DewXmH2fu/SKN9GAMG2DXTP/ljQgIfWNoQ3vWKu1fkDvwA9zGo5cnh+AN4BE+GWp6cwtfWkmZswZcYM8Se4KUCn6vlmTGrnKuWz8kzY02+VxKfirfi51iKn32UGOWSg2dIqFY6vlTONz5mUX3gGonpQeJz4vai1Tl6+Jo9xu/sL/nc7mj4q3IeK1+rGvwzasXn7rjX1p7+hW/5V1rdjU9Jusdnalvfs6vwN1c2gUyACwAA
+  </data>
+ </layer>
+</map>
