@@ -16,6 +16,11 @@ public class HighScoreState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) {
 		FileStore.addHighScore(5000);
  		scores = FileStore.getHighScores();
 	}

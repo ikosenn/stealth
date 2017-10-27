@@ -36,12 +36,14 @@ public class Soldier extends Entity {
 	private Sound fireGun;
 	private Sound emptyGun;
 	private Vector startPos;
+	private Vector worldGoal;
 	
-	public Soldier(Vector startPos, int bullets) {
+	public Soldier(Vector startPos, Vector worldGoal, int bullets) {
 		super(startPos.getX(), startPos.getY());
 		this.startPos = startPos;
 		velocity = new Vector(0f, 0f);
 		this.bullets = bullets;
+		this.worldGoal = worldGoal;
 		
 		SpriteSheet soldierSprites = ResourceManager.getSpriteSheet(StealthGame.SOLDIER_SRC, 60, 60);
 		rightStanding = soldierSprites.getSubImage(13, 11, 40, 50);
@@ -192,17 +194,46 @@ public class Soldier extends Entity {
 		return true;
 	}
 	
+	/**
+	 * Kill the soldier amd reset the soldier to the start position
+	 * 
+	 * @param sg. Holds the state of the game.
+	 */
+	public void killSoldier(StealthGame sg) {
+		sg.reduceLives();
+		sg.soundAlarm(false);
+		this.setPosition(startPos);
+		sg.resetCounter();
+	}
+	
 	private void checkGuardCollision(StealthGame sg) {
 		if (sg.guards !=null && sg.guards.size() > 0) {
 			for (int i = 0; i < sg.guards.size(); i++) {
 				Collision isPen = this.collides(sg.guards.get(i));
 				if (isPen != null) {
-					sg.reduceLives();
-					sg.soundAlarm(false);
-					this.setPosition(startPos);
-					sg.resetCounter();
+					killSoldier(sg);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Checks whether the soldier is at the goal state. The goal state is provided by the 
+	 * current world. The soldier also cannot complete the level if the alarm is on.
+	 * 
+	 * @param game. Holds the state of the game.
+	 * @return True if the soldier is at the goal state. False otherwise.
+	 */
+	public boolean atGoalState(StealthGame game) {
+		float goalX = this.worldGoal.getX();
+		float goalY = this.worldGoal.getY();
+		if (!game.isAlarmOn() && this.getCoarseGrainedMinX() < goalX && 
+				this.getCoarseGrainedMaxX() > goalX && this.getCoarseGrainedMinY() < goalY && 
+					this.getCoarseGrainedMaxY() > goalY) {
+			game.incrementScore(game.getLevel() * 150);
+			return true;
+		} else {
+			return false;
 		}
 	}
 	

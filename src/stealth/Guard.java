@@ -191,6 +191,7 @@ public class Guard extends Entity {
 				if (isPen != null) {
 					this.setActive(false);
 					sg.bullets.get(i).setActive(false);
+					sg.incrementScore(25);  // kill score
 				}
 			}
 		}
@@ -360,8 +361,14 @@ public class Guard extends Entity {
 		
 		for (int i = 0; i < this.rangeVisible.size(); i++) {
 			Node temp = this.rangeVisible.get(i);
-			if (temp.getX() == soldierX && temp.getY() == currentY) {
+			if (temp.getX() == soldierX && temp.getY() == currentY && !sg.isAlarmOn()) {
 				sg.soundAlarm(true);
+				// lose 10 points if alarm is sounded
+				sg.incrementScore(-10);
+				if (sg.getSpottedCount() > 1) {
+					sg.soldier.killSoldier(sg);
+					sg.setSpottedCount(0);
+				}
 			}
 		}
 	}
