@@ -40,6 +40,11 @@ public class TreasureChest extends Entity {
 			Random random = new Random();
 			if (random.nextBoolean()) {
 				game.powerups.add(new PowerUp());
+				game.incrementScore(100);
+			} else {
+				// we are not mean with points if you don't find
+				// the power up
+				game.incrementScore(50);
 			}
 		}
 	}

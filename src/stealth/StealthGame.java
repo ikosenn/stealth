@@ -59,7 +59,7 @@ public class StealthGame extends StateBasedGame {
 	
 	public final static int SCREEN_WIDTH = 1024;
 	public final static int SCREEN_HEIGHT = 800;
-	public static final int MAX_LEVELS = 3;
+	public static final int MAX_LEVELS = 1;
 	public static final int MAX_LIVES = 3;
 	
 	private boolean isAlarmOn = false;
@@ -193,7 +193,8 @@ public class StealthGame extends StateBasedGame {
 			tempGuard.generatePatrolPaths(this.world);
 			guards.add(tempGuard);
 		}
-		this.soldier = new Soldier(world.getStartPos(), patrolRoutes.length - 1);
+		this.soldier = new Soldier(
+			world.getStartPos(), world.getGoalPos(), patrolRoutes.length - 1);
 		// create walls
 		Node[][] tileNodes = world.getNodes();
 		for (int i = 0; i < tileNodes.length; i++) {

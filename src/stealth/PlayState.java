@@ -16,6 +16,11 @@ public class PlayState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+	}
+	
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) {
 		StealthGame sg = (StealthGame)game;
 		sg.createWorld();
 	}
@@ -29,11 +34,14 @@ public class PlayState extends BasicGameState {
 			sg.guards.get(i).render(g);
 		}
 		sg.soldier.render(g);
-		g.drawString("Run: " + sg.getHeat() / 1000 + " seconds",  810, 10);
-		g.drawString("Cooling down: " + sg.getCoolingDown() / 1000 + " seconds", 810, 40);
-		g.drawString("Bullets: " + sg.soldier.getBulletCount(), 710, 10);
-		g.drawString("Life: " + sg.getLife(), 710, 40);
-		g.drawString("PowerUp: " + sg.powerups.size(), 510, 40);
+		g.drawString("Level: " + sg.getLevel(),  15, 10);
+		g.drawString("Life: " + sg.getLife(), 15, 40);
+		g.drawString("Run: " + sg.getHeat() / 1000 + " seconds",  340, 10);
+		g.drawString("Cooling down: " + sg.getCoolingDown() / 1000 + " seconds", 340, 40);
+		g.drawString("Bullets: " + sg.soldier.getBulletCount(), 700, 10);
+		
+		g.drawString("PowerUp: " + sg.powerups.size(), 700, 40);
+		g.drawString("Score: " + sg.getScore(), 920, 10);
 		if (sg.getBullet() != null) {
 			ArrayList<Bullet> fired = sg.getBullet();
 			for (int i = 0; i < fired.size(); i++) {
@@ -109,6 +117,16 @@ public class PlayState extends BasicGameState {
 			if (!i.next().isActive()) {
 				i.remove();
 			}
+		}
+		if (sg.getLife() <= 0) {
+			game.enterState(StealthGame.GAMEOVERSTATE_ID);
+		}
+		
+		if (sg.soldier.atGoalState(sg) && sg.getLevel() == StealthGame.MAX_LEVELS) {
+			game.enterState(StealthGame.GAMEOVERSTATE_ID);
+		} else if(sg.soldier.atGoalState(sg)) {
+			sg.setLevel(sg.getLevel() + 1);
+			game.enterState(StealthGame.PLAY_STATE_ID);
 		}
 	}
 

@@ -32,6 +32,7 @@ class GameOverState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		StealthGame sg = (StealthGame)game;
+		FileStore.addHighScore(sg.getScore());
 		sg.setLevel(1);  // reset the levels
 		sg.setLife();
 		timer = 4000;
@@ -40,8 +41,8 @@ class GameOverState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game,
 			Graphics g) throws SlickException {
-		g.drawImage(ResourceManager.getImage(StealthGame.GAMEOVER_BANNER_RSC), 225,
-				270);
+		g.drawImage(ResourceManager.getImage(StealthGame.GAMEOVER_BANNER_RSC), 380,
+				350);
 
 	}
 

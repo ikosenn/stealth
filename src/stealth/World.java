@@ -25,6 +25,7 @@ public class World {
 	private Node[][] nodes;
 	private int level;
 	private Vector startPos; // where the soldier should start from
+	private Vector goalPos;  // the level goal state.
 	private Vector treasureChestPos; // where the treasure chest should be placed
 	
 	/**
@@ -96,7 +97,8 @@ public class World {
 	private void createLevelOne() throws SlickException {
 		this.map = new TiledMap(World.levelOneTile); 
 		this.setPatrolRoutes();
-		this.startPos = new Vector(20, 770); 
+		this.startPos = new Vector(20, 770);
+		this.goalPos = new Vector(990, 90);
 		this.treasureChestPos = new Vector(932, 660);
 	}
 	
@@ -124,6 +126,14 @@ public class World {
 	 */
 	public Vector getStartPos() {
 		return this.startPos;
+	}
+	
+	/**
+	 * Get the world's goal position
+	 * @return Vector. The soldiers target position
+	 */
+	public Vector getGoalPos() {
+		return this.goalPos;
 	}
 	
 	/**
