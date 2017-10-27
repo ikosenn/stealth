@@ -3,8 +3,10 @@ package stealth;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 
 import jig.Collision;
@@ -201,9 +203,10 @@ public class Guard extends Entity {
 	 * Update the position of the guard
 	 * @param sg. Contains the current game state
 	 */
-	public void update(StealthGame sg) {
+	public void update(StealthGame sg, GameContainer container) {
 		this.checkBulletCollision(sg);
 		this.determineCurrentPath(sg);
+		Input input = container.getInput();
 		this.alertBase(sg);
 		Vector destination = null;
 		if (this.currentPath != null) {
@@ -297,6 +300,14 @@ public class Guard extends Entity {
 			orientation = "STANDING";
 			this.setVelocity(0f, 0f);
 			stopped = true;
+		}
+		
+		if (input.isKeyDown(Input.KEY_C)) {
+			this.debugPath = !this.debugPath;
+		}
+		
+		if (input.isKeyDown(Input.KEY_V)) {
+			this.debugDetectionRange = !this.debugDetectionRange;
 		}
 	}
 	/**
