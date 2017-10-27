@@ -189,6 +189,7 @@ public class StealthGame extends StateBasedGame {
 		guards = new ArrayList<>();
 		world = new World(this.getLevel());
 		walls = new ArrayList<>();
+		this.setSpottedCount(0);
 		Vector[][] patrolRoutes = this.world.getPatrolRoutes();
 		for (int i = 0; i < patrolRoutes.length; i++) {
 			Guard tempGuard = new Guard(patrolRoutes[i]);
