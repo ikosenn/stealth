@@ -3,11 +3,14 @@ package stealth;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 
 import jig.Collision;
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -58,11 +61,12 @@ public class Guard extends Entity {
 		}
 		
 		// left side images
-		addImageWithBoundingBox(leftStanding);
+		addImage(leftStanding);
 		
 		// set the animation 
 		guardRightAnimation = new Animation(rightDirection, 100);
 		guardLeftAnimation = new Animation(leftDirection, 100);	
+		addShape(new ConvexPolygon(32f, 55f));
 	}	
 	
 	/**
@@ -201,9 +205,10 @@ public class Guard extends Entity {
 	 * Update the position of the guard
 	 * @param sg. Contains the current game state
 	 */
-	public void update(StealthGame sg) {
+	public void update(StealthGame sg, GameContainer container) {
 		this.checkBulletCollision(sg);
 		this.determineCurrentPath(sg);
+		Input input = container.getInput();
 		this.alertBase(sg);
 		Vector destination = null;
 		if (this.currentPath != null) {
@@ -255,7 +260,7 @@ public class Guard extends Entity {
 		if (keyPressed == "W") {
 			if (orientation != "STANDING") {
 				resetEntity();
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 				orientation = "STANDING";
 			}
 			// check if the soldier was moving down/ left and right
@@ -270,7 +275,7 @@ public class Guard extends Entity {
 		if (keyPressed == "S"){
 			if (orientation != "STANDING") {
 				resetEntity();
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 				orientation = "STANDING";
 			}
 			// check if the soldier was moving up/ left / right
@@ -288,15 +293,23 @@ public class Guard extends Entity {
 		if (!moved && !stopped) {
 			resetEntity();
 			if (orientation == "LEFT") {
-				addImageWithBoundingBox(leftStanding);
+				addImage(leftStanding);
 			} else if (orientation == "RIGHT") {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 			} else {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 			}
 			orientation = "STANDING";
 			this.setVelocity(0f, 0f);
 			stopped = true;
+		}
+		
+		if (input.isKeyDown(Input.KEY_C)) {
+			this.debugPath = !this.debugPath;
+		}
+		
+		if (input.isKeyDown(Input.KEY_V)) {
+			this.debugDetectionRange = !this.debugDetectionRange;
 		}
 	}
 	/**

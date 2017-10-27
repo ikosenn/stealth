@@ -61,7 +61,7 @@ public class PlayState extends BasicGameState {
 		sg.alarm.update(sg);
 		sg.treasureChest.update(sg);
 		for (int i = 0; i < sg.guards.size(); i++) {
-			sg.guards.get(i).update(sg);
+			sg.guards.get(i).update(sg, container);
 		}
 		
 		if (sg.getHeat() > 0 && sg.isAlarmOn()) {

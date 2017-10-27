@@ -12,8 +12,9 @@ I have also successfully created the first version (v1.0) which implements all t
 
 Shortcuts
 ~~~~~~~~~
-To access the different levels use the ``Z`` key for level two and the ``X`` key for level three.
-
+- To access the different levels use the ``z`` key for level two and the ``x`` key for level three.
+- You can also view the path generate by the guards by pressing ``c``. You can use this to toggle it on and off.
+- You can also toggle the detection zone for the guards using the ``v`` key. I dont recommend toggling the detection zone and paths at the same time since they use the same color of squares.
 
 What has been done
 ~~~~~~~~~~~~~~~~~~

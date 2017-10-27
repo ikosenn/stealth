@@ -10,6 +10,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 
 import jig.Collision;
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -58,7 +59,7 @@ public class Soldier extends Entity {
 		}
 		
 		// left side images
-		addImageWithBoundingBox(rightStanding);
+		addImage(rightStanding);
 		
 		// set the animation 
 		soldierRightAnimation = new Animation(rightDirection, 100);
@@ -70,6 +71,7 @@ public class Soldier extends Entity {
 		this.currentNode = new Node(startX, startY);	
 		this.fireGun = ResourceManager.getSound(StealthGame.GUN_SHOT_SRC);
 		this.emptyGun = ResourceManager.getSound(StealthGame.GUN_EMPTY_SRC);
+		addShape(new ConvexPolygon(32f, 55f));
 	}
 	
 	/**
@@ -324,12 +326,12 @@ public class Soldier extends Entity {
 			resetEntity();
 			if (orientation == "LEFT") {
 				previousSide = "LEFT";
-				addImageWithBoundingBox(leftStanding);
+				addImage(leftStanding);
 			} else if (orientation == "RIGHT") {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 				previousSide = "RIGHT";
 			} else {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 			}
 			orientation = "STANDING";
 			this.setVelocity(0f, 0f);
