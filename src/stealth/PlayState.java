@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -55,6 +56,7 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		StealthGame sg = (StealthGame)game;
+		Input input = container.getInput();	
 		sg.soldier.update(container, sg, delta);
 		sg.alarm.update(sg);
 		sg.treasureChest.update(sg);
@@ -126,6 +128,16 @@ public class PlayState extends BasicGameState {
 			game.enterState(StealthGame.GAMEOVERSTATE_ID);
 		} else if(sg.soldier.atGoalState(sg)) {
 			sg.setLevel(sg.getLevel() + 1);
+			game.enterState(StealthGame.PLAY_STATE_ID);
+		}
+		
+		if (input.isKeyDown(Input.KEY_Z)) {
+			sg.setLevel(2);
+			game.enterState(StealthGame.PLAY_STATE_ID);
+		}
+		
+		if (input.isKeyDown(Input.KEY_X)) {
+			sg.setLevel(3);
 			game.enterState(StealthGame.PLAY_STATE_ID);
 		}
 	}
