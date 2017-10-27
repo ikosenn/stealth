@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SpriteSheet;
 
 import jig.Collision;
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.ResourceManager;
 import jig.Vector;
@@ -60,11 +61,12 @@ public class Guard extends Entity {
 		}
 		
 		// left side images
-		addImageWithBoundingBox(leftStanding);
+		addImage(leftStanding);
 		
 		// set the animation 
 		guardRightAnimation = new Animation(rightDirection, 100);
 		guardLeftAnimation = new Animation(leftDirection, 100);	
+		addShape(new ConvexPolygon(32f, 55f));
 	}	
 	
 	/**
@@ -258,7 +260,7 @@ public class Guard extends Entity {
 		if (keyPressed == "W") {
 			if (orientation != "STANDING") {
 				resetEntity();
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 				orientation = "STANDING";
 			}
 			// check if the soldier was moving down/ left and right
@@ -273,7 +275,7 @@ public class Guard extends Entity {
 		if (keyPressed == "S"){
 			if (orientation != "STANDING") {
 				resetEntity();
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 				orientation = "STANDING";
 			}
 			// check if the soldier was moving up/ left / right
@@ -291,11 +293,11 @@ public class Guard extends Entity {
 		if (!moved && !stopped) {
 			resetEntity();
 			if (orientation == "LEFT") {
-				addImageWithBoundingBox(leftStanding);
+				addImage(leftStanding);
 			} else if (orientation == "RIGHT") {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 			} else {
-				addImageWithBoundingBox(rightStanding);
+				addImage(rightStanding);
 			}
 			orientation = "STANDING";
 			this.setVelocity(0f, 0f);
